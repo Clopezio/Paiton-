@@ -68,11 +68,23 @@ def play(Money):
     return Money
 
 if __name__ == "__main__":
-    Money = 100
+    try:
+        with open('soldi_blackjack.txt', 'r') as f:
+            Money = float(f.read())
+    except FileNotFoundError:
+        Money = 100
+
     while Money > 0:
         Money = play(Money)
+        with open('soldi_blackjack.txt', 'w') as f:
+            f.write(str(Money))
         if Money <= 0:
-            print("Hai fatto banca rotta! Il gioco è finito.")
+            print("Hai fatto banca rotta! Il gioco è finito. Eccoti 25 Dollaroni per ricominciare!")
+            Money = 25
+            with open('soldi_blackjack.txt', 'w') as f:
+                f.write(str(Money))
+        else:
+            print("Hai", Money, " Dollaroni")
             break
         play_again = input("Vuoi giocare ancora? (s/n): ")
         if play_again.lower() != 's':
