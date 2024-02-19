@@ -68,9 +68,16 @@ def play(Money):
     return Money
 
 if __name__ == "__main__":
-    Money = 100
+    try:
+        with open('money.txt', 'r') as f:
+            Money = float(f.read())
+    except FileNotFoundError:
+        Money = 100
+
     while Money > 0:
         Money = play(Money)
+        with open('money.txt', 'w') as f:
+            f.write(str(Money))
         if Money <= 0:
             print("Hai fatto banca rotta! Il gioco è finito.")
             break
