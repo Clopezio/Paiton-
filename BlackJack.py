@@ -40,9 +40,13 @@ def play(Money):
             break
 
         action = input("Vuoi pescare un'altra carta? (s/n): ")
+        while action.lower() not in ['s', 'n']:
+            print("Scelta non valida. Riprova.")
+            action = input("Vuoi pescare un'altra carta? (s/n): ")
+
         if action.lower() == 's':
             player_hand.append(cards.pop())
-        else:
+        elif action.lower() == 'n':
             while dealer_sum < 17:
                 dealer_hand.append(cards.pop())
                 dealer_sum = sum(dealer_hand)
