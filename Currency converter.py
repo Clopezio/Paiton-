@@ -129,7 +129,6 @@ def ruble():
     else:
         print("Invalid choice. Please try again.")
         ruble()
-
 def franc():
     amount = float(input("Enter the amount in francs: "))
     print("1. Dollar")
@@ -154,7 +153,6 @@ def franc():
     else:
         print("Invalid choice. Please try again.")
         franc()
-
 def turkish_lira():
     amount = float(input("Enter the amount in turkish lira: "))
     print("1. Dollar")
@@ -179,6 +177,4 @@ def turkish_lira():
     else:
         print("Invalid choice. Please try again.")
         turkish_lira()
-
-
-main()
+main()      
