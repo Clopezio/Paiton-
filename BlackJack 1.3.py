@@ -13,12 +13,28 @@ def play(Money):
     print("Buona fortuna!\n")
 
     print("Hai", Money, " Dollaroni")
-    player_bet = float(input("Inserisci la scommessa: "))
-    if player_bet > Money:
-        print("Non hai abbastanza soldi per questa scommessa. Riprova.")
+    player_bet = input("Inserisci la scommessa: ")
+    if player_bet == "CHEATER":
+        print("OMMADONNA! Sei un cheater! Ti diamo UN BORDELLO di Dollaroni!")
+        Money += 1000  
+        print("Ora hai", Money, " Dollaroni")
         return Money
-
-    cards = [1,2,3,4,5,6,7,8,9,10,10,10,10] * 4
+    else:
+        try:
+            player_bet = float(player_bet)
+            if player_bet > Money:
+                print("Non hai abbastanza soldi per questa scommessa. Riprova.")
+                return play(Money)
+            elif player_bet < Money:
+                print("Hai scommesso", player_bet, "Dollaroni")
+            else:
+                print("Hai scommesso", player_bet, "Dollaroni")
+        except ValueError:
+            print("Inserisci un numero valido.")
+            return play(Money)
+        else:
+            print(" ")
+    cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10] * 4
     random.shuffle(cards)
 
     player_hand = [cards.pop(), cards.pop()]
@@ -55,41 +71,45 @@ def play(Money):
 
             if dealer_sum > 21:
                 print("Il dealer ha sballato! Hai vinto!")
-                print("Hai vinto", player_bet, "euro!")
                 Money += player_bet
+                break
             elif dealer_sum == player_sum:
                 print("Pareggio!")
+                break
             elif dealer_sum > player_sum:
                 print("Il dealer ha vinto!")
                 Money -= player_bet
+                break
             else:
-                print("Hai vinto!") 
-                print("Hai vinto", player_bet, "euro!")
+                print("Hai vinto!")
                 Money += player_bet
-            break
+                break
 
-    print("Ora hai", Money, "euro!")
+    print("Hai", Money, " Dollaroni")
+    if Money == 0:
+        print("Hai fatto banca rotta! Il gioco è finito. Eccoti 25 Dollaroni per ricominciare!")
+        Money = 25
+
+    play_again = input("Vuoi giocare ancora? (s/n): ")
+    if play_again.lower() == 's':
+        Money = play(Money)
+
     return Money
 
-if __name__ == "__main__":
-    try:
-        with open('soldi_blackjack.txt', 'r') as f:
-            Money = float(f.read())
-    except FileNotFoundError:
-        Money = 100
+try:
+    with open('soldi_blackjack.txt', 'r') as f:
+        Money = float(f.read())
+except FileNotFoundError:
+    Money = 100
 
-    while Money > 0:
-        Money = play(Money)
+while Money > 0:
+    Money = play(Money)
+    with open('soldi_blackjack.txt', 'w') as f:
+        f.write(str(Money))
+    if Money <= 0:
+        print("Hai fatto banca rotta! Il gioco è finito. Eccoti 25 Dollaroni per ricominciare!")
+        Money = 25
         with open('soldi_blackjack.txt', 'w') as f:
             f.write(str(Money))
-        if Money <= 0:
-            print("Hai fatto banca rotta! Il gioco è finito. Eccoti 25 Dollaroni per ricominciare!")
-            Money = 25
-            with open('soldi_blackjack.txt', 'w') as f:
-                f.write(str(Money))
-        else:
-            print("Hai", Money, " Dollaroni")
-            break
-        play_again = input("Vuoi giocare ancora? (s/n): ")
-        if play_again.lower() != 's':
-            break
+    else:
+        break
